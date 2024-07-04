@@ -17,7 +17,7 @@ variable "org_id" {
   If the org_id is specified then the project is created at the top level.
   Changing this forces the project to be migrated to the newly specified organization.
   EOT
-  default     = ""
+  default     = null
   type        = string
 }
 
@@ -28,7 +28,7 @@ variable "folder_id" {
   If the folder_id is specified, then the project is created under the specified folder. 
   Changing this forces the project to be migrated to the newly specified folder.
   EOT
-  default     = ""
+  default     = null
   type        = string
 }
 
