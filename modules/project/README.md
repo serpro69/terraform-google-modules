@@ -22,10 +22,10 @@ Refer to [versions.tf](versions.tf) for details on terraform and providers' requ
 ```hcl
 module "project" {
   source           = "github.com/serpro69/terraform-google-modules//modules/project"
-  billing_account  = var.billing_account
-  folder_id        = local.folder_id["${var.folder_name}"]
-  project_id       = local.project_name
-  project_name     = local.project_name
+  billing_account  = "0123567890"
+  folder_id        = "my-folder"
+  project_id       = "my-project-id"
+  project_name     = "my-project-name"
 }
 ```
 

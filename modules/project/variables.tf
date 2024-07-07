@@ -43,12 +43,12 @@ variable "project_name" {
 }
 
 variable "deletion_policy" {
-  description = <<EOL
-    The deletion policy for the Project. 
-    Setting PREVENT will protect the project against any destroy actions caused by a terraform apply or terraform destroy. 
-    Setting ABANDON allows the resource to be abandoned rather than deleted. 
-    Possible values are: "PREVENT", "ABANDON", "DELETE"
-  EOL
+  description = <<-EOT
+  The deletion policy for the Project. 
+  Setting PREVENT will protect the project against any destroy actions caused by a terraform apply or terraform destroy. 
+  Setting ABANDON allows the resource to be abandoned rather than deleted. 
+  Possible values are: "PREVENT", "ABANDON", "DELETE"
+  EOT
   type        = string
 }
 

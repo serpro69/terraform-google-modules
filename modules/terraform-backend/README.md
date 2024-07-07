@@ -21,7 +21,7 @@ Refer to <https://cloud.google.com/docs/terraform/resource-management/store-stat
 
 ### Code Example
 
-```tf
+```hcl
 module "tfstate" {
   source = "github.com/serpro69/terraform-google-modules//modules/terraform-backend"
 
