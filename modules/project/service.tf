@@ -2,7 +2,7 @@
 # https://github.com/terraform-google-modules/terraform-google-project-factory/tree/master/modules/project_services
 module "project_services" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 17.0"
+  version = "~> 18.1"
 
   project_id                  = var.project_id
   activate_apis               = var.services

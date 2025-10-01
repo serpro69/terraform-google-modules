@@ -2,7 +2,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 6, < 7"
+      version = ">= 7, < 8"
       configuration_aliases = [
         # user_project_override = false
         google,
@@ -10,9 +10,9 @@ terraform {
     }
     time = {
       source  = "hashicorp/time"
-      version = "~> 0.12"
+      version = "~> 0.13"
     }
   }
 
-  required_version = "~> 1.9"
+  required_version = "~> 1.10"
 }
