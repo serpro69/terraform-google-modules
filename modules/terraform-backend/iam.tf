@@ -10,6 +10,16 @@ resource "google_project_iam_member" "storage_admin" {
   depends_on = [data.google_storage_project_service_account.main]
 }
 
+resource "google_project_iam_member" "storage_bucket_viewer" {
+  for_each = toset(var.iam_gcs_bucket_viewers)
+
+  project = data.google_project.main.project_id
+  role    = "roles/storage.bucketViewer"
+  member  = each.value
+
+  depends_on = [data.google_storage_project_service_account.main]
+}
+
 resource "google_project_iam_member" "sa_kms_encrypter_decrypter" {
   # Make sure we only use required roles
   # ref: https://cloud.google.com/kms/docs/iam

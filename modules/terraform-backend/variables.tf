@@ -31,7 +31,12 @@ variable "project_deletion_policy" {
 # IAM
 
 variable "iam_gcs_admins" {
-  description = "List of members to grant storage.admin role to on the bucket level"
+  description = "List of members to grant storage.admin role to on the project level"
+  type        = list(string)
+}
+
+variable "iam_gcs_bucket_viewers" {
+  description = "List of members to grant storage.bucketViewer role to on the project level"
   type        = list(string)
 }
 
