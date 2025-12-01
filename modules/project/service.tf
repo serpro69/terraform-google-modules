@@ -6,7 +6,7 @@ module "project_services" {
 
   project_id                  = var.project_id
   activate_apis               = var.services
-  disable_services_on_destroy = false
+  disable_services_on_destroy = var.disable_services_on_destroy
 
   depends_on = [
     google_project.main,
