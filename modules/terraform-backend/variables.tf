@@ -54,7 +54,7 @@ variable "gcs_state_base" {
 }
 
 variable "gcs_state_folders" {
-  description = "Map of folders and their admins/users members in ${gcs_state_base} to store state files in"
+  description = "Map of folders and their admins/users members in $gcs_state_base to store state files in"
   type = map(object({
     admins = list(string)
     users  = list(string)
