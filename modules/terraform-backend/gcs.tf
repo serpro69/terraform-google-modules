@@ -128,7 +128,7 @@ moved {
 
 resource "google_storage_managed_folder_iam_policy" "terraform_state" {
   for_each       = var.gcs_state_folders
-  bucket         = google_storage_managed_folder.terraform_state[each.key].bucket
-  managed_folder = google_storage_managed_folder.terraform_state[each.key].name
+  bucket         = google_storage_managed_folder.state[each.key].bucket
+  managed_folder = google_storage_managed_folder.state[each.key].name
   policy_data    = data.google_iam_policy.storage_folder_tfstate[each.key].policy_data
 }
