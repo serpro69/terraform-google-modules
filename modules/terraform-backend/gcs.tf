@@ -76,48 +76,59 @@ resource "google_storage_bucket_iam_policy" "policy" {
 
 # Managed folders and their permissions
 
-resource "google_storage_managed_folder" "terraform_state_prod" {
-  bucket = google_storage_bucket.tfstate.name
-  name   = "terraform/state/prod/"
+moved {
+  from = google_storage_managed_folder.terraform_state_prod
+  to   = google_storage_managed_folder.state["prod"]
 }
 
-resource "google_storage_managed_folder" "terraform_state_test" {
-  bucket = google_storage_bucket.tfstate.name
-  name   = "terraform/state/test/"
+moved {
+  from = google_storage_managed_folder.terraform_state_test
+  to   = google_storage_managed_folder.state["test"]
 }
 
-# IAM roles for cloud storage: https://cloud.google.com/storage/docs/access-control/iam-roles
-data "google_iam_policy" "storage_folder_tfstate_prod" {
-  binding {
-    role    = "roles/storage.admin"
-    members = var.iam_gcs_tfstate_folder_prod_admins
-  }
-  binding {
-    role    = "roles/storage.objectUser"
-    members = var.iam_gcs_tfstate_folder_prod_users
-  }
+resource "google_storage_managed_folder" "state" {
+  for_each = var.gcs_state_folders
+  bucket   = google_storage_bucket.tfstate.name
+  name     = "${var.gcs_state_base}/${each.key}/"
 }
 
 # IAM roles for cloud storage: https://cloud.google.com/storage/docs/access-control/iam-roles
-data "google_iam_policy" "storage_folder_tfstate_test" {
+
+moved {
+  from = data.google_iam_policy.storage_folder_tfstate_prod
+  to   = data.google_iam_policy.storage_folder_tfstate["prod"]
+}
+
+moved {
+  from = data.google_iam_policy.storage_folder_tfstate_test
+  to   = data.google_iam_policy.storage_folder_tfstate["test"]
+}
+
+data "google_iam_policy" "storage_folder_tfstate" {
+  for_each = var.gcs_state_folders
   binding {
     role    = "roles/storage.admin"
-    members = var.iam_gcs_tfstate_folder_test_admins
+    members = each.value.admins
   }
   binding {
     role    = "roles/storage.objectUser"
-    members = var.iam_gcs_tfstate_folder_test_users
+    members = each.value.users
   }
 }
 
-resource "google_storage_managed_folder_iam_policy" "terraform_state_prod" {
-  bucket         = google_storage_managed_folder.terraform_state_prod.bucket
-  managed_folder = google_storage_managed_folder.terraform_state_prod.name
-  policy_data    = data.google_iam_policy.storage_folder_tfstate_prod.policy_data
+moved {
+  from = google_storage_managed_folder_iam_policy.terraform_state_prod
+  to   = google_storage_managed_folder_iam_policy.terraform_state["prod"]
 }
 
-resource "google_storage_managed_folder_iam_policy" "terraform_state_test" {
-  bucket         = google_storage_managed_folder.terraform_state_test.bucket
-  managed_folder = google_storage_managed_folder.terraform_state_test.name
-  policy_data    = data.google_iam_policy.storage_folder_tfstate_test.policy_data
+moved {
+  from = google_storage_managed_folder_iam_policy.terraform_state_test
+  to   = google_storage_managed_folder_iam_policy.terraform_state["test"]
+}
+
+resource "google_storage_managed_folder_iam_policy" "terraform_state" {
+  for_each       = var.gcs_state_folders
+  bucket         = google_storage_managed_folder.state[each.key].bucket
+  managed_folder = google_storage_managed_folder.state[each.key].name
+  policy_data    = data.google_iam_policy.storage_folder_tfstate[each.key].policy_data
 }
