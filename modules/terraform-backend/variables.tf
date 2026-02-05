@@ -45,27 +45,31 @@ variable "iam_gcs_object_viewers" {
   type        = list(string)
 }
 
-variable "iam_gcs_tfstate_folder_prod_admins" {
-  description = "List of members to grant storage.admin role to on the 'prod' folder level"
-  type        = list(string)
-}
-
-variable "iam_gcs_tfstate_folder_prod_users" {
-  description = "List of members to grant storage.admin role to on the 'prod' folder level"
-  type        = list(string)
-}
-
-variable "iam_gcs_tfstate_folder_test_admins" {
-  description = "List of members to grant storage.admin role to on the 'test' folder level"
-  type        = list(string)
-}
-
-variable "iam_gcs_tfstate_folder_test_users" {
-  description = "List of members to grant storage.admin role to on the 'test' folder level"
-  type        = list(string)
-}
-
 # GCS
+
+variable "gcs_state_base" {
+  description = "Base path for storing state files"
+  type        = string
+  default     = "terraform/state"
+}
+
+variable "gcs_state_folders" {
+  description = "Map of folders and their admins/users members in ${gcs_state_base} to store state files in"
+  type = map(object({
+    admins = list(string)
+    users  = list(string)
+  }))
+  default = {
+    prod = {
+      admins = []
+      users  = []
+    }
+    test = {
+      admins = []
+      users  = []
+    },
+  }
+}
 
 variable "gcs_force_destroy" {
   description = "Whether to force destroy the bucket and all objects stored in it"
